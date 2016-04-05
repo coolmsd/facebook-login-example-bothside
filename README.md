@@ -23,7 +23,7 @@ http://localhost:3000/
 1. Client side auth
 	- http://localhost:3000/
 	- using js sdk of facebook
-	- /views/index.ejs
+	- config : /views/index.ejs
 ```sh
   window.fbAsyncInit = function() {
     FB.init({

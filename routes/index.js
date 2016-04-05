@@ -8,6 +8,10 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+router.get('/login', function(req, res, next) {
+  res.redirect('/facebook');
+});
+
 router.get('/facebook', function(req, res, next) {
 	var data = { title: 'facebook' };
   res.render('facebook', data);

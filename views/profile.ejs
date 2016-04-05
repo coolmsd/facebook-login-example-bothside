@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title> <%=title%></title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+</head>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+</script>
+</head>
+<body>
+<ul class="nav nav-pills">
+  <li role="presentation"><a href="/">Client Side Auth</a></li>
+  <li role="presentation"><a href="/facebook">Server Side Auth</a></li>
+  <li role="presentation" class="active"><a href="/profile">Check Profile of Session</a></li>
+</ul>
+<h1>Check Profile of Session - using [connect-ensure-login]</h1>
+<div class="row">
+<div class="col-md-8">
+
+	<h3>Logged In Facebook</h3>
+
+	<div class="panel panel-info">
+		<div class="panel-heading">user data from facebook</div>
+	  <div class="panel-body">
+			<form class="form-horizontal">
+		  <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-2 control-label">display Name</label>
+		    <div class="col-sm-10">
+		     	<input type="text" class="form-control" value="<%=user.displayName%>" readonly>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+		    <div class="col-sm-10">
+		     	<input type="email" class="form-control" value="<%=user.emails[0].value%>" readonly>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-2 control-label">picture url</label>
+		    <div class="col-sm-10">
+		     	<input type="email" class="form-control" value="<%=user.photos[0].value%>" readonly>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputPassword3" class="col-sm-2 control-label">userId</label>
+		    <div class="col-sm-10">
+		      <input type="text" class="form-control" id="inputPassword3" placeholder="<%=user.id%>" readonly>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputPassword3" class="col-sm-2 control-label">accessToken</label>
+		    <div class="col-sm-10">
+		    	<textarea class="form-control" rows="6" readonly><%=user.accessToken%></textarea>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputPassword3" class="col-sm-2 control-label">Debug token</label>
+		    <div class="col-sm-10">
+		    	<a class="btn btn-success" role="button" href="https://developers.facebook.com/tools/debug/accesstoken?q=<%=user.accessToken%>" target="blank">facebook Debugger</a>
+		    </div>
+		  </div>
+			</form>
+	  </div>
+	</div>
+</div>
+</div>
+</body>
+</html>

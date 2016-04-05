@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title> <%=title%></title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+</head>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<ul class="nav nav-pills">
+  <li role="presentation"><a href="/">Client Side Auth</a></li>
+  <li role="presentation" class="active"><a href="/facebook">Server Side Auth</a></li>
+  <li role="presentation"><a href="/profile">Check Profile of Session</a></li>
+</ul>
+<h1>This page using passport-facebook on node - Server Side Auth</h1>
+<div class="row">
+<div class="col-md-4 well">
+	<h3>LOGIN to Facebook</h3>
+	<form class="form" action="/facebook" method="post">
+  <div class="form-group">
+    <label class="sr-only" for="exampleInputEmail3">Email address</label>
+    <input type="email" class="form-control" id="exampleInputEmail3" name="username" placeholder="Email" value="">
+  </div>
+  <div class="form-group">
+    <label class="sr-only" for="exampleInputPassword3">Password</label>
+    <input type="password" class="form-control" id="exampleInputPassword3" name="password" placeholder="Password" value="">
+  </div>
+  <button type="submit" class="btn btn-default">Sign in</button>
+</form>
+</div>
+</div>
+</body>
+</html>

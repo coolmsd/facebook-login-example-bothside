@@ -1,3 +1,5 @@
+## The purpose of his example is get access token with login facebook
+
 ## Install
 ```sh
 $npm install

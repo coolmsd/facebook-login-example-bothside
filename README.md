@@ -1,8 +1,20 @@
-install : npm install
-run : npm start
-check server : http://localhost:3000/
+## Install
+```sh
+$npm install
+```
 
-you need app id and app secret
+## Run
+```sh 
+$npm start
+```
+
+
+## check server
+```sh  
+http://localhost:3000/
+```
+
+you need app id and app secret of facebook
 
 1. Client side auth
 	- using js sdk of facebook

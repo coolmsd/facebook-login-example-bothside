@@ -1,4 +1,5 @@
-## The purpose of his example is get access token with login facebook
+## facebook-login-example-bothside
+The purpose of his example is to get access token with login facebook
 
 ## Install
 ```sh

@@ -10,9 +10,10 @@ var bodyParser = require('body-parser');
     var FacebookStrategy = require('passport-facebook').Strategy;
     var config = require('./auth/conf');
 
-
 var routes = require('./routes/index');
-
+var facebook = require('./routes/facebook');
+var instagram = require('./routes/instagram');
+var shopify = require('./routes/shopify');
 var app = express();
 
 // view engine setup
@@ -32,11 +33,24 @@ app.use(express.static(path.join(__dirname, 'public')));
     app.use(passport.initialize());
     app.use(passport.session());
 
-app.use('/', routes);
-//app.use('/users', users);
-
 
 /* passport */
+    // The local authentication strategy authenticates users using a username and
+    // password.  The strategy requires a `verify` callback, which accepts these
+    // credentials and calls `done` providing a user.
+/*    var LocalStrategy = require('passport-local').Strategy;
+    passport.use(new LocalStrategy(
+      function(username, password, done) {
+        User.findOne({ username: username }, function (err, user) {
+          if (err) { return done(err); }
+          if (!user) { return done(null, false); }
+          if (!user.verifyPassword(password)) { return done(null, false); }
+          return done(null, user);
+        });
+      }
+    ));*/
+
+
     // Configure the Facebook strategy for use by Passport.
     //
     // OAuth 2.0-based strategies require a `verify` function which receives the
@@ -79,6 +93,11 @@ app.use('/', routes);
       cb(null, obj);
     });
 
+app.use('/', routes);
+app.use('/facebook', facebook);
+app.use('/instagram', instagram);
+app.use('/shopify', shopify);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -110,6 +129,24 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
+
+// app.use(function(req, res, next) {
+//   console.log(req.headers.origin);
+//   // Website you wish to allow to connect
+//   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8090');
+
+//   // Request methods you wish to allow
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+//   // Request headers you wish to allow
+//   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+//   // Set to true if you need the website to include cookies in the requests sent
+//   // to the API (e.g. in case you use sessions)
+//   res.setHeader('Access-Control-Allow-Credentials', true);
+//   next();
+// })
 
 
 module.exports = app;

@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title> <%=title%></title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+</head>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<ul class="nav nav-pills">
+  <li role="presentation"><a href="/">Client Side Auth</a></li>
+  <li role="presentation"><a href="/facebook">Server Side Auth</a></li>
+  <li role="presentation" class="active"><a href="/facebook/post">facebook/post</a></li>
+  <li role="presentation"><a href="/profile">Check Profile of Session</a></li>
+  <li role="presentation"><a href="/getAdPreview">Ad Preview</a></li>
+</ul>
+<h1><%=title%></h1>
+<div class="row">
+	<div class="col-md-12 well">
+		<%=user.id%><br/>
+		<%=user.displayName%><br/>
+		<%=user._json.email%><br/>
+	</div>
+
+	<div class="col-md-12 panel panel-success">
+		<form class="form-horizontal" method="get" action="/facebook/getPosts" role="form">
+	    <input type="text" class="form-control" name="pageId" value="1728812260675990">
+	    <input class="btn btn-success" type="submit" value="Get Posts from Page">
+	 	</form>
+  </div>
+	<div class="col-md-12 panel panel-success">
+	  <div class="panel-heading">
+	  Post
+	  </div>
+	  <div class="panel-body">
+			<form class="form-horizontal" method="post" action="/facebook/post" role="form">
+
+		  <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-2 control-label">userId</label>
+		    <div class="col-sm-10">
+		     	<input type="text" class="form-control" name="userId" value="<%=user.id%>" placeholder="<%=user.id%>" readonly>
+		    </div>
+		  </div>
+
+		  <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-2 control-label">pageId</label>
+		    <div class="col-sm-10">
+		     	<input type="text" class="form-control" name="pageId" value="1728812260675990">
+		    </div>
+		  </div>
+
+		  <div class="form-group">
+		    <label for="inputEmail3" class="col-sm-2 control-label">Message to post</label>
+		    <div class="col-sm-10">
+		     	<textarea class="form-control" name="postMessage" rows="6">This is from SDK!</textarea>
+		    </div>
+		  </div>
+
+ 			<div class="form-group">
+		    <label for="inputEmail3" class="col-sm-2 control-label"></label>
+		    <div class="col-sm-10">
+		    <input class="btn btn-success" type="submit" value="Submit">
+		    </div>
+		  </div>
+
+		  <% if(message!=undefined) { %>
+	    <div class="alert alert-success" role="alert">
+	      <div id="post_status"><%=message%></div>
+	    </div>
+	    <% } %>
+		  </form>
+	  </div>
+	</div>
+</div>
+</body>
+</html>

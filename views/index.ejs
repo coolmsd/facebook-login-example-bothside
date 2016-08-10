@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title> new document </title>
+<title> <%=title%> </title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
@@ -19,9 +19,13 @@
 <script>
   window.fbAsyncInit = function() {
     FB.init({
-      appId      : 'Enter your consumer key here',
+      appId      : '206197829739639',
       xfbml      : true,
       version    : 'v2.5'
+    });
+
+    FB.getLoginStatus(function(response) {
+      document.getElementById('isConnected').innerHTML = response.status + " on facebook.";
     });
   };
   // Load the SDK asynchronously
@@ -37,7 +41,6 @@
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
     console.log('statusChangeCallback');
-    //console.log(response);
     //only short term token
     var accessToken = response.authResponse.accessToken;
     // console.log("accessToken" + accessToken);
@@ -82,25 +85,69 @@
         'Thanks for logging in, ' + response.name + '!';
     });
   }
+
+  function customLogin() {
+    FB.login(
+      function(response) {
+        console.log(response);
+        statusChangeCallback(response)
+      },
+      {
+        scope: 'user_likes,public_profile,email,publish_pages',
+        auth_type: 'rerequest'
+      }
+    );
+  }
+
+  function customPost() {
+    FB.getLoginStatus(function(response) {
+      if (response.status=='connected') {
+        sendPost();
+      } else {
+          FB.login(
+            function(response) {
+              sendPost();
+            },
+            {
+              scope: 'user_likes,public_profile,email,publish_pages',
+              auth_type: 'rerequest'
+            }
+          );
+      }
+    });
+  }
+  function sendPost(){
+    FB.api(
+      '/1728812260675990/feed', //cafeDori facebook page
+      'post',
+      { message: 'from js sdk!!!!! :(' },
+      function(response) {
+        document.getElementById('post_status').innerHTML = "POST ID : " + response.id;
+    });
+  }
+
 </script>
 <ul class="nav nav-pills">
   <li role="presentation" class="active"><a href="/">Client Side Auth</a></li>
   <li role="presentation"><a href="/facebook">Server Side Auth</a></li>
+  <li role="presentation"><a href="/facebook/post">facebook/post</a></li>
   <li role="presentation"><a href="/profile">Check Profile of Session</a></li>
+  <li role="presentation"><a href="/getAdPreview">Ad Preview</a></li>
 </ul>
 <h1>Client Side Auth</h1>
+
 <div class="row">
-  <div class="col-md-6">
-    <h3>LIke / Share Button</h3>
-    <div
-      class="fb-like"
-      data-share="true"
-      data-width="450"
-      data-show-faces="true">
+  <div class="col-md-12">
+    <div class="alert alert-warning" role="alert">
+      <div id="isConnected"></div>
     </div>
   </div>
+</div>
+
+<div class="row">
   <div class="col-md-6">
     <h3>Login Button</h3>
+    <button class="btn btn-info" onclick="customLogin()">customLogin</button>
     <!--
       Below we include the Login Button social plugin. This button uses
       the JavaScript SDK to present a graphical Login button that triggers
@@ -111,11 +158,18 @@
   </div>
 </div>
 
+
 <div class="row">
   <div class="col-md-12">
     <div class="alert alert-success" role="alert">
       <div id="status">After login you can check accessToken</div>
       <div id="current_token"></div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <button class="btn btn-success" onclick="customPost();">Post</button>
+    <div class="alert alert-info" role="alert">
+      <div id="post_status">After Post you can check post ID</div>
     </div>
   </div>
 </div>

@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title> <%=title%></title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+</head>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+</script>
+</head>
+<body>
+<ul class="nav nav-pills">
+  <li role="presentation"><a href="/">Client Side Auth</a></li>
+  <li role="presentation"><a href="/facebook">Server Side Auth</a></li>
+  <li role="presentation"><a href="/facebook/post">facebook/post</a></li>
+  <li role="presentation"><a href="/profile">Check Profile of Session</a></li>
+  <li role="presentation" class="active"><a href="/getAdPreview">Ad Preview</a></li>
+</ul>
+<h1>Ad Preview - using [connect-ensure-login]</h1>
+<div class="row">
+  <div class="col-md-6">
+    <h3>RIGHT_COLUMN_STANDARD</h3>
+
+  </div>
+  <div class="col-md-6">
+    <h3>DESKTOP_FEED_STANDARD</h3>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <h3>MOBILE_FEED_STANDARD</h3>
+
+  </div>
+  <div class="col-md-6">
+    <h3>MOBILE_FEED_BASIC</h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <h3>MOBILE_INTERSTITIAL</h3>
+
+  </div>
+  <div class="col-md-6">
+    <h3>MOBILE_BANNER</h3>
+
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <h3>MOBILE_MEDIUM_RECTANGLE</h3>
+
+  </div>
+  <div class="col-md-6">
+    <h3>MOBILE_NATIVE</h3>
+
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <h3>INSTAGRAM_STANDARD</h3>
+
+  </div>
+</div>
+
+<script>
+  var boxes = $(".col-md-6");
+  var url = 'https://graph.facebook.com/v2.5/6040315012010/previews';
+  var preview_tag = "";
+  var preview_src = "";
+  var w = 0;
+  var h = 0;
+  var src = "";
+
+ $.each(boxes, function(index, box) {
+    //console.log($(box).find("h3").text());
+    var ad_format = $(box).find("h3").text();
+    var param = { ad_format : ad_format,
+                access_token : '<%=user.accessToken%>'
+               };
+    $.getJSON(url, param).done(function(data) {
+      console.log(data);
+      $.each(data.data, function(index, item) {
+        preview_tag = $(item.body);
+        preview_src = preview_tag.prop("src");
+        w = preview_tag.prop("width");
+        h = preview_tag.prop("height");
+      });
+    }).then(function() {
+      $(box).append('<iframe src='+preview_src+' width="'+w+'" height="'+h+'" scrolling="yes" style="border: none;"</iframe>');
+    });
+ });
+</script>
+
+
+</body>
+</html>

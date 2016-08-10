@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title> <%=title%> </title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+</head>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="https://npmcdn.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript" src="/data/testData.js"></script>
+</head>
+<body>
+<script>
+
+	function sendData(eventType) {
+		var url = 'http://localhost:3000/api/events/webhook/4f9ddc9f31787e690f1fb6/'+eventType;
+		// var url = 'http://requestb.in/1nhfex31';
+		var data = $("textarea").val();
+		// var body = JSON.parse(data);
+		var COLLECTION = SHOPIFY.COLLECTION;
+		var CART = SHOPIFY.CART;
+		var body = null;
+
+		var data = new FormData();
+
+		if (eventType==='collections-create') {
+			data.append('id', COLLECTION.id);
+			data.append('title', COLLECTION.title);
+			data.append('body_html', COLLECTION.body_html);
+		} else if (eventType==='carts-create') {
+			data.append('id', CART.id);
+			data.append('token', CART.token);
+			data.append('line_items', CART.line_items);
+		}
+
+
+		var xhr = new XMLHttpRequest();
+		xhr.onload = function(){
+			console.log(xhr.response);
+		};
+		xhr.open("POST", url);
+		xhr.setRequestHeader('Content-type', 'application/json');
+		// xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		xhr.send(data);
+
+	}
+
+
+</script>
+
+<body>
+
+
+
+<div class="row" style="padding:30px">
+	<div class="col-sm-12">
+
+		<form class="form-horizontal" method	="post" action="http://requestb.in/1nhfex31" role="form">
+		<div class="panel panel-success">
+			  <div class="panel-heading">
+			    <h3 class="panel-title"><%=title%></h3>
+			  </div>
+			  <div class="panel-body">
+			  	<lable>id : </lable><input type="text" name="id" class="form-control" value="346881735" />
+			  	<lable>title : </lable><input type="text" name="title" class="form-control" value="Winter goods collections" />
+			  	<lable>body_html : </lable><input type="text" name="body_html" class="form-control" value="<h1>collections created!!</h1>" />
+			    <!-- <textarea class="form-control" rows="20"></textarea> -->
+			  </div>
+			  <div class="panel-footer">
+			  	<div class="row">
+			  		<input class="btn btn-primary" type="submit" value="submit" />
+			  	</div>
+			  	<br/>
+			  	<div class="row">
+				    <input class="btn btn-success" type="button" onclick="sendData('collections-create');" value="collections-create">
+				    <!-- <input class="btn btn-info" type="button" onclick="sendData('collections-update');" value="collections-update">
+				    <input class="btn btn-warning" type="button" onclick="sendData('collections-delete');" value="collections-delete"> -->
+			  	</div>
+			  	<br/>
+			  	<div class="row">
+				    <input class="btn btn-success" type="button" onclick="sendData('carts-create');" value="carts-create">
+				    <!-- <input class="btn btn-info" type="button" onclick="sendData('carts-update');" value="carts-update"> -->
+			  	</div>
+			  	<!-- <br/>
+			  	<div class="row">
+				    <input class="btn btn-success" type="button" onclick="sendData('orders-create');" value="orders-create">
+				    <input class="btn btn-info" type="button" onclick="sendData('orders-updated');" value="orders-updated">
+				    <input class="btn btn-danger" type="button" onclick="sendData('orders-delete');" value="orders-delete">
+				    <input class="btn btn-info" type="button" onclick="sendData('orders-paid');" value="orders-paid">
+				    <input class="btn btn-warning" type="button" onclick="sendData('orders-cancelled');" value="orders-cancelled">
+			  	</div> -->
+		    </div>
+		</div>
+	 	</form>
+
+	</div>
+</div>
+
+
+</body>
+</html>

@@ -1,50 +1,40 @@
 var express = require('express');
 var passport = require('passport');
+var axios = require('axios');
 var router = express.Router();
-var conf = require('../auth/conf');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
-router.get('/login', function(req, res, next) {
-  res.redirect('/facebook');
-});
-
-router.get('/facebook', function(req, res, next) {
-	var data = { title: 'facebook' };
-  res.render('facebook', data);
+  res.render('routeList', { title: 'Route List' });
 });
 
 
-// var failureFlash = 'Invalid username or password.';
-// var successFlash = 'Welcome!';
+router.get('/main', function(req, res, next) {
+  res.render('index', { title: 'Test' });
+});
 
-//login facebook
-router.post('/facebook', 
-	passport.authenticate('facebook',  conf.facebook.options));
 
-//after login facebook callback here with user info
-//should have same callback url with [conf.facebook.callbackURL]
-router.get('/facebook/callback', 
-	passport.authenticate('facebook', { successRedirect : '/profile', failureRedirect: '/facebook' }));
-
-/*
-// if you want to do something in callback url (right after login)
-app.get('/login/facebook/callback', 
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/');
-  });
-*/
 
 //check loggedin facebook -> useing middleware [connect-ensure-login]
-//to use ensureLoggedIn :: required npm install - not necessary
+//to use [connect-ensure-login] :: required npm install
 router.get('/profile', require('connect-ensure-login').ensureLoggedIn(),
   function(req, res){
 		var data = { title: 'facebook' , user: req.user};
     res.render('profile', data);
 });
+
+router.get('/getAdPreview', require('connect-ensure-login').ensureLoggedIn(),
+  function(req, res){
+    var data = { title: 'getAdPreview' , user: req.user};
+    res.render('adPreview', data);
+});
+
+/* if ensureLoggedIn() fail to get login info from facebook(session)
+* connect-ensure-login send to /login
+*/
+router.get('/login', function(req, res, next) {
+  res.redirect('/facebook');
+});
+
 
 module.exports = router;

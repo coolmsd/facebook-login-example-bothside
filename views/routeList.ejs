@@ -13,33 +13,103 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript">
 
+
+    // Our plugin will be defined within an immediately
+    // executed method.
+    (function($) {
+      // Default to the current location.
+      var strLocation = window.location.href;
+      var strHash = window.location.hash;
+      var strPrevLocation = "";
+      var strPrevHash = "";
+      // This is how often we will be checkint for
+      // changes on the location.
+      var intIntervalTime = 100;
+      // This method removes the pound from the hash.
+      var fnCleanHash = function(strHash) {
+        return (strHash.substring(1, strHash.length));
+      }
+      // This will be the method that we use to check
+      // changes in the window location.
+      var fnCheckLocation = function(){
+        // Check to see if the location has changed.
+        if (strLocation != window.location.href){
+          // Store the new and previous locations.
+          strPrevLocation = strLocation;
+          strPrevHash = strHash;
+          strLocation = window.location.href;
+          strHash = window.location.hash;
+          // The location has changed. Trigger a
+          // change event on the location object,
+          // passing in the current and previous
+          // location values.
+          $(window.location).trigger("change", {
+            currentHref: strLocation,
+            currentHash: fnCleanHash(strHash),
+            previousHref: strPrevLocation,
+            previousHash: fnCleanHash(strPrevHash)
+          });
+        }
+      }
+      // Set an interval to check the location changes.
+      setInterval(fnCheckLocation, intIntervalTime);
+    })(jQuery);
+
+
+    // Bind a change handler to the window location.
+    $(window.location).bind("change", function(objEvent, objData){
+      var jLog = $( "#log" );
+      // Add the URL change.
+      jLog.append(
+          "<li>" +
+          "Hash changed from " +
+          "<strong>" + objData.previousHash + "</strong>" +
+          " to " +
+          "<strong>" + objData.currentHash + "</strong>" +
+          "</li>"
+          );
+    });
+</script>
 </head>
 <body>
 <div class="row">
+	<div id="log" class="col-md-12">
+	</div>
 	<div class="col-sm-6">
 		<div class="list-group">
 		  <a href="#index" class="list-group-item active">
 		    INDEX
 		  </a>
 		  <a href="/main" class="list-group-item">main</a>
+		  <a href="/test.html?bomaToken=4f88d5932473777f3b76b25ccdb045cd" class="list-group-item list-group-item-info">test.html?bomaToken=4f88d5932473777f3b76b25ccdb045cd</a>
 		  <a href="/getAdPreview" class="list-group-item">getAdPreview</a>
+		  <a href="/external/gender" class="list-group-item">external/gender</a>
 		</div>
 	</div>
 
 
 	<div class="col-sm-6">
 		<div class="list-group">
-		  <a href="#index" class="list-group-item active">
+		  <a href="#shopify" class="list-group-item active">
 		    SHOPIFY
 		  </a>
-		  <a href="/shopify/" class="list-group-item">prompt</a>
-		  <a href="/shopify/webhook/list" class="list-group-item">webhook/list</a>
-		  <a href="/shopify/webhook/get" class="list-group-item">webhook/get</a>
-		  <a href="/shopify/webhook/create" class="list-group-item">webhook/create</a>
-		  <a href="/shopify/webhook/update" class="list-group-item">webhook/update</a>
-		  <a href="/shopify/webhook/delete" class="list-group-item">webhook/delete</a>
-		  <a href="/shopify/send-data" class="list-group-item">send-data</a>
+		  <a href="/shopify/" class="list-group-item">login - getToken</a>
+
+      <a href="/shopify/script/info" class="list-group-item list-group-item-info">script - info</a>
+      <a href="/shopify/script/create" class="list-group-item list-group-item-info">script - create</a>
+      <a href="/shopify/script/update?id=103934855" class="list-group-item list-group-item-info">script - update?id=103934855</a>
+      <a href="/shopify/script/delete?id=103934855" class="list-group-item list-group-item-info">script - delete?id=103934855</a>
+
+      <a href="/shopify/send-data" class="list-group-item">send-data</a>
+      <a href="/shopify/encrypt?text=facebook_61_396" class="list-group-item">encrypt?text=facebook_61_396</a>
+
+		  <a href="/shopify/webhook/list" class="list-group-item list-group-item-warning">webhook/list</a>
+		  <a href="/shopify/webhook/get" class="list-group-item list-group-item-warning">webhook/get</a>
+		  <a href="/shopify/webhook/create" class="list-group-item list-group-item-warning">webhook/create</a>
+		  <a href="/shopify/webhook/update" class="list-group-item list-group-item-warning">webhook/update</a>
+		  <a href="/shopify/webhook/delete" class="list-group-item list-group-item-warning">webhook/delete</a>
 		</div>
 	</div>
 
@@ -47,26 +117,27 @@
 <div class="row">
 	<div class="col-sm-6">
 		<div class="list-group">
-		  <a href="#index" class="list-group-item active">
+		  <a href="#facebook" class="list-group-item active">
 		    FACEBOOK
 		  </a>
 		  <a href="/facebook/" class="list-group-item">login</a>
-		  <a href="/facebook/post" class="list-group-item">Post on your Feed</a>
-		  <a href="/facebook/1728812260675990/getPosts" class="list-group-item">/1728812260675990/getPosts</a>
-		  <a href="/facebook/1728812260675990/post" class="list-group-item">/1728812260675990/post</a>
+		  <a href="/facebook/post" class="list-group-item list-group-item-info">Post on your Feed</a>
+		  <a href="/facebook/1728812260675990/getPosts" class="list-group-item list-group-item-info">/1728812260675990/getPosts</a>
+		  <a href="/facebook/1728812260675990/post" class="list-group-item list-group-item-info">/1728812260675990/post</a>
 		  <a href="/facebook/campaigns" class="list-group-item">/campaigns</a>
 		  <a href="/facebook/campaign/update" class="list-group-item">/campaign/update</a>
 		  <a href="/facebook/adset/update" class="list-group-item">/adset/update</a>
 		  <a href="/facebook/ad/update" class="list-group-item">/ad/update</a>
 		  <a href="/facebook/pages" class="list-group-item">/pages</a>
-		  <a href="/facebook/debug/token" class="list-group-item">/debug/token</a>
+		  <a href="/facebook/debug/token" class="list-group-item list-group-item-warning">/debug/token</a>
+		  <a href="/facebook/page/token" class="list-group-item list-group-item-warning">/page/token</a>
 		</div>
 	</div>
 
 
 	<div class="col-sm-6">
 		<div class="list-group">
-		  <a href="#index" class="list-group-item active">
+		  <a href="#instagram" class="list-group-item active">
 		    INSTAGRAM
 		  </a>
 		  <a href="/instagram/1728812260675990/account" class="list-group-item">1728812260675990/account</a>

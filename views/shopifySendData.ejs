@@ -19,9 +19,9 @@
 <body>
 <script>
 
-	function sendData(eventType) {
-		var url = 'http://localhost:3000/api/events/webhook/4f9ddc9f31787e690f1fb6/'+eventType;
-		// var url = 'http://requestb.in/1nhfex31';
+	function sendData(objectType, eventType) {
+		var url = 'http://sodam.pagekite.me/api/events/webhook/449ddc9f31787e690f1fb5/'+objectType+'/'+eventType;
+		// var url = 'http://requestb.in/1lfyqqe1';
 		var data = $("textarea").val();
 		// var body = JSON.parse(data);
 		var COLLECTION = SHOPIFY.COLLECTION;
@@ -79,13 +79,13 @@
 			  	</div>
 			  	<br/>
 			  	<div class="row">
-				    <input class="btn btn-success" type="button" onclick="sendData('collections-create');" value="collections-create">
+				    <input class="btn btn-success" type="button" onclick="sendData('collections','created');" value="collections-created">
 				    <!-- <input class="btn btn-info" type="button" onclick="sendData('collections-update');" value="collections-update">
 				    <input class="btn btn-warning" type="button" onclick="sendData('collections-delete');" value="collections-delete"> -->
 			  	</div>
 			  	<br/>
 			  	<div class="row">
-				    <input class="btn btn-success" type="button" onclick="sendData('carts-create');" value="carts-create">
+				    <input class="btn btn-success" type="button" onclick="sendData('carts','created');" value="carts-created">
 				    <!-- <input class="btn btn-info" type="button" onclick="sendData('carts-update');" value="carts-update"> -->
 			  	</div>
 			  	<!-- <br/>

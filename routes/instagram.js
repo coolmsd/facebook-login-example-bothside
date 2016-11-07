@@ -115,7 +115,7 @@ router.get('/:page_id/createAdCreatives', function(req, res, next) {
           // image_hash:"dbce3bf6b57da4ec23359019cb14f8af",
           image_url: "https://scontent.xx.fbcdn.net/v/t1.0-9/p720x720/13307466_1167103126685559_1468040217717161033_n.jpg?oh=2de6988a2a65d22e326384e83567c349&oe=57E233AE",
           image_crops: {
-            "100x100": [ [0,0], [700, 700] ],
+            "100x100": [ [0,0], [600, 600] ],
             // "191x100": [ [0,200], [1146, 800] ]
           }
         }

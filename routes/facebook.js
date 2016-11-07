@@ -1,9 +1,10 @@
-var express = require('express');
-var passport = require('passport');
-var axios = require('axios');
-var router = express.Router();
-var conf = require('../auth/conf');
-var adsAPI = require('facebook-adssdk-node');
+const express = require('express');
+const passport = require('passport');
+const axios = require('axios');
+const router = express.Router();
+const conf = require('../auth/conf');
+const adsAPI = require('facebook-adssdk-node');
+const _ = require('lodash');
 
 var adsAPIConfig = {
   adAccountId: conf.facebook.adAccountId,
@@ -98,18 +99,18 @@ router.get('/:page_id/post',
     var id = req.params.page_id;  //1728812260675990 : cafedori
     var message = req.body.postMessage;
     var obj = {
-      message: (message==undefined) ? 'Posting with image!- with call_to_action' : message,
+      message: (message==undefined) ? 'Start a New Campaign' : message,
       published: true,
-      // caption: 'caption',
+      caption: 'get Free',
       // description: 'description',
-      link: 'http://www.w3schools.com/css/',
-      picture: 'https://scontent-syd1-1.xx.fbcdn.net/v/t1.0-9/13256122_1744535369103679_663153915000343401_n.png?oh=0f45f6f437a745fe0247c84e207b5534&oe=58191957'
+      link: 'http://www.boma.com',
+      picture: 'https://boma-test-1.s3-ap-southeast-2.amazonaws.com/userName/Koala.jpg'
 
       ,call_to_action: {
-        type: 'LEARN_MORE',
+        type: 'BOOK_TRAVEL',
         value: {
-          link: 'http://www.w3schools.com/css/',
-          link_caption: 'link_caption_in_call_to_action'
+          link: 'http://www.boma.com',
+          link_caption: 'get Free'
         }
       }
     };
@@ -185,8 +186,17 @@ router.get('/adset/update', function(req, res, next) {
         age_max: 65,
         age_min: 20,
         geo_locations: {
-          countries: [
+          countries: [ //array of country codes
             "NZ"
+          ],
+          regions: [ //array of region codes - State, province, or region
+            {'key':'3847'},
+            {'key':'2724'}
+          ],
+          cities: [ //array of citie keys
+            "2418779"
+          ],
+          zips: [ //array of full zip codes e.g. US:92103
           ],
           location_types: [
             "recent"
@@ -255,13 +265,12 @@ router.get('/ad/update', function(req, res, next) {
 
 router.get('/pages', function(req, res, next) {
   adsAPIConfig.accessToken = conf.facebook.accessToken;
-  FacebookService.getAdsAPI().getUser().getOwnPages().require('page')
+  FacebookService.getAdsAPI().getUser().getOwnPages().require('name')
     .done().then((response) => {
       res.json(response.data);
     }).catch((error) => {
       res.json(error);
-      // throw error;
-  });
+    });
 });
 
 router.get('/debug/token', function(req, res, next) {
@@ -290,5 +299,22 @@ router.get('/debug/token', function(req, res, next) {
       // throw error;
   });
 });
+
+
+
+router.get('/page/token', function(req, res, next) {
+  var pageId = req.query.pageId;
+  if(_.isUndefined(pageId)) {
+    pageId = 128072234297840;
+  }
+  var input_token = conf.facebook.accessToken;
+  FacebookService.getAdsAPI().getPage(pageId).getPageInfo().require('access_token')
+    .done().then((response) => {
+      res.json(response.data);
+    }).catch((error) => {
+      res.json(error);
+    });
+});
+
 
 module.exports = router;

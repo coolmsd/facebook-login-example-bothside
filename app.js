@@ -9,6 +9,7 @@ var crypto = require('crypto');
 /* passport */
     var passport = require('passport');
     var FacebookStrategy = require('passport-facebook').Strategy;
+    var GoogleStrategy = require('passport-google-oauth20');
     var config = require('./auth/conf');
 
 var routes = require('./routes/index');
@@ -17,6 +18,7 @@ var instagram = require('./routes/instagram');
 var shopify = require('./routes/shopify');
 var events = require('./routes/event');
 var external = require('./routes/external');
+var google = require('./routes/google');
 var app = express();
 
 // view engine setup
@@ -69,7 +71,8 @@ app.use(function (req, res, next) {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    passport.use(new FacebookStrategy({
+    passport.use(
+      new FacebookStrategy({
         clientID: config.facebook.clientID,
         clientSecret: config.facebook.clientSecret,
         callbackURL: config.facebook.callbackURL,
@@ -80,7 +83,21 @@ app.use(function (req, res, next) {
         profile.accessToken = accessToken;
         profile.refreshToken = refreshToken;
         return cb(null, profile);
-      }));
+    }));
+
+    passport.use(
+        new GoogleStrategy.Strategy({
+            clientID: config.google.ADWORDS_CLIENT_ID,
+            clientSecret: config.google.ADWORDS_SECRET,
+            callbackURL: config.google.ADWORDS_CALLBACK_URL
+          },
+          function(accessToken, refreshToken, profile, cb) {
+            profile.accessToken = accessToken;
+            profile.refreshToken = refreshToken;
+            return cb(null, profile);
+          }
+        )
+      );
 
     passport.serializeUser(function(user, cb) {
       cb(null, user);
@@ -96,6 +113,7 @@ app.use('/instagram', instagram);
 app.use('/shopify', shopify);
 app.use('/api', events);
 app.use('/external', external);
+app.use('/google', google);
 
 
 // catch 404 and forward to error handler
@@ -137,7 +155,7 @@ app.use(function(err, req, res, next) {
 
 module.exports = app;
 
-////////for webhook test
+////////for HTTPS
 // const https = require('https');
 // const fs = require('fs');
 // const qs = require('querystring');

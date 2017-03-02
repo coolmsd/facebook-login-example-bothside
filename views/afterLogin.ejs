@@ -17,21 +17,19 @@
 </head>
 <body>
 <ul class="nav nav-pills">
-  <li role="presentation"><a href="/">Client Side Auth</a></li>
-  <li role="presentation" class="active"><a href="/facebook">Server Side Auth</a></li>
-  <li role="presentation"><a href="/facebook/post">facebook/post</a></li>
-  <li role="presentation"><a href="/profile">Check Profile of Session</a></li>
-  <li role="presentation"><a href="/getAdPreview">Ad Preview</a></li>
+  <li role="presentation"><a href="/">Home</a></li>
 </ul>
-<h1>AFTER LOGIN</h1>
+<h1>AFTER LOGIN - <%=title%></h1>
 <div class="row">
 	<div class="col-md-4 well">
-		<%=user.id%><br/>
-		<%=user.displayName%><br/>
+		UserId : <%=user.id%><br/>
+		User.displayName: <%=user.displayName%><br/>
 		<%=user._json.email%><br/>
 		<textarea class="form-control" rows="6" readonly><%=user.accessToken%></textarea>
 		<br>
-		<a class="btn btn-info" href="/facebook/post">Post on your Feed</a>
+    <%if (title!=='google') { %>
+      <a class="btn btn-info" href="/facebook/post">Post on your Feed</a>
+    <%}%>
 	</div>
 </div>
 </body>

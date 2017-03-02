@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title> <%=title%> </title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+</head>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<!-- Step 1: Create the containing elements. -->
+
+<section id="auth-button"></section>
+<section id="view-selector"></section>
+<section id="timeline"></section>
+
+<!-- Step 2: Load the library. -->
+
+<script>
+  (function(w,d,s,g,js,fjs){
+    g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(cb){this.q.push(cb)}};
+    js=d.createElement(s);fjs=d.getElementsByTagName(s)[0];
+    js.src='https://apis.google.com/js/platform.js';
+    fjs.parentNode.insertBefore(js,fjs);js.onload=function(){g.load('analytics')};
+  }(window,document,'script'));
+
+  gapi.analytics.ready(function() {
+
+    // Step 3: Authorize the user.
+
+    //sodam
+    var CLIENT_ID = '451272993148-n5b9ia9ck1j25kc03vhbtn3jap96pbkp.apps.googleusercontent.com';
+    var ACCESS_TOKEN_FROM_SERVICE_ACCOUNT = 'ya29.Ci-dA0-zi7tgaysI-GYieU8cU0_5FtKLtr445odeFy-SyoOcwbtxG3Rr0UCHI1iT5Q';
+
+    gapi.analytics.auth.authorize({
+      container: 'auth-button',
+      clientid: CLIENT_ID,
+      // serverAuth: {
+      //   'access_token': ACCESS_TOKEN_FROM_SERVICE_ACCOUNT
+      // }
+    });
+
+    // Step 4: Create the view selector.
+
+    var viewSelector = new gapi.analytics.ViewSelector({
+      container: 'view-selector'
+    });
+
+    // Step 5: Create the timeline chart.
+
+    var timeline = new gapi.analytics.googleCharts.DataChart({
+      reportType: 'ga',
+      query: {
+        'dimensions': 'ga:date',
+        'metrics': 'ga:sessions',
+        'start-date': '30daysAgo',
+        'end-date': 'today',
+      },
+      chart: {
+        type: 'LINE',
+        container: 'timeline'
+      }
+    });
+
+    // Step 6: Hook up the components to work together.
+
+    gapi.analytics.auth.on('success', function(response) {
+      viewSelector.execute();
+    });
+
+    viewSelector.on('change', function(ids) {
+      var newIds = {
+        query: {
+          ids: ids
+        }
+      }
+      timeline.set(newIds).execute();
+    });
+  });
+</script>
+</html>

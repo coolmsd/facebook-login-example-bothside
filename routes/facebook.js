@@ -71,6 +71,25 @@ router.get('/profile',
 
 });
 
+////////////////////////////////////// search
+router.get('/search',
+  function(req, res, next){
+    var query = req.query.q || 'fashion';;
+    var type = req.query.type || 'adinterest';
+
+    var params = {
+      q: query,
+      type: type
+    };
+    adsAPIConfig.accessToken = conf.facebook.accessToken;
+    FacebookService.getAdsAPI().search().targetingSearch().set(params).done()
+      .then((response)=>{
+        res.json(response);
+      }).catch((error)=>{
+        console.error(error);
+        next(error);
+      });
+});
 
 
 ////////////////////////////////////// PAGE POST
